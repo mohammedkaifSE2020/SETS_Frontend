@@ -14,6 +14,8 @@ interface WebSocketState {
   send: (destination: string, payload: any) => void;
 }
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const useWebSocketStore = create<WebSocketState>((set, get) => ({
   stompClient: null,
   isConnected: false,
@@ -23,7 +25,7 @@ export const useWebSocketStore = create<WebSocketState>((set, get) => ({
     if (get().stompClient?.active) return;
 
     const client = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws-game'),
+      webSocketFactory: () => new SockJS(API_BASE_URL + '/ws-game'),
       onConnect: () => {
         console.log('STOMP: Connected');
         set({ isConnected: true });
